@@ -1,23 +1,23 @@
 library(shiny)
 
-load('./data/beta_tissues.RData')
-# Define server logic required to draw a histogram
-shinyServer(function(input, output) {
+load('./data/beta_tissues.Rdata')
 
-  # Expression that generates a histogram. The expression is
-  # wrapped in a call to renderPlot to indicate that:
-  #
-  #  1) It is "reactive" and therefore should be automatically
-  #     re-executed when inputs change
-  #  2) Its output type is a plot
+shinyServer(function(input, output, session) {
 
   output$distPlot <- renderPlot({
-    x1 <- beta[,input$sample_one]  # Old Faithful Geyser data
-    x2 <- beta[,input$sample_two]  # Old Faithful Geyser data
+    x1 <- beta[,input$sample_one]
+    x2 <- beta[,input$sample_two]
     bins <- seq(min(c(x1, x2)), max(c(x1, x2)), length.out = input$bins + 1)
 
-    # draw the histogram with the specified number of bins
     hist(x1, breaks = bins, col = 'darkgray', border = 'white')
     hist(x2, breaks = bins, col = 'lightgray', border = 'white', add = TRUE)
   })
+
+  updateSelectInput(session, "sample_one",
+      choices = colnames(beta)
+  )
+
+  updateSelectInput(session, "sample_two",
+      choices = colnames(beta)
+  )
 })
