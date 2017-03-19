@@ -5,8 +5,8 @@ load('./data/beta_tissues.Rdata')
 shinyServer(function(input, output, session) {
 
   output$distPlot <- renderPlot({
-    x1 <- beta[,input$sample_one]
-    x2 <- beta[,input$sample_two]
+    x1 <- beta[, input$sample_one]
+    x2 <- beta[, input$sample_two]
     bins <- seq(min(c(x1, x2)), max(c(x1, x2)), length.out = input$bins + 1)
 
     hist(x1, breaks = bins, col = 'darkgray', border = 'white')
